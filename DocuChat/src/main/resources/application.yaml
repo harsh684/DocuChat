@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: docuchat
+
+  datasource:
+    url: jdbc:postgresql://localhost:5001/docuchatDB
+    username: docuchat
+    password: docuchat
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  ai:
+    model:
+      chat:
+        enabled: openai
+
+    openai:
+      api-key: ${HUGGINGFACE_API_KEY}
+      base-url: https://router.huggingface.co
+      chat:
+        headers:
+          x-wait-for-model: "true"
+          x-use-cache: "false"
+        options:
+          model: deepseek-ai/DeepSeek-R1
+
+    huggingface:
+      embedding:
+        api-key: ${HUGGINGFACE_API_KEY:no-key-found}
+        url: https://router.huggingface.co/hf-inference/models/sentence-transformers/all-MiniLM-L6-v2/pipeline/feature-extraction
+    vectorstore:
+          pgvector:
+            table-name: vector_store
+            initialize-schema: true
+            dimensions: 384  # Matches all-MiniLM-L6-v2 dimension
